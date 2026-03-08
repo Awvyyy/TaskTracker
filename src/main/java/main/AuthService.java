@@ -22,10 +22,10 @@ public class AuthService {
 
     public static LoginResult login(String username, String password) {
         username = username.trim();
-        if (username.contains(":") || username.isEmpty()){
+        if (username.contains(":") || username.isBlank()){
             return LoginResult.INVALID_INPUT;
         }
-        if (password.contains(":") || password.isEmpty()){
+        if (password.contains(":") || password.isBlank()){
             return LoginResult.INVALID_INPUT;
         }
 
@@ -44,7 +44,7 @@ public class AuthService {
 
         username = username.trim();
         // guard 1: username validation
-        if (username.isEmpty()) {
+        if (username.isBlank()) {
             return RegisterResult.INVALID_USERNAME;
         }
         if (username.contains(":")) {
@@ -52,7 +52,7 @@ public class AuthService {
         }
 
         // guard 2: password validation
-        if (password.trim().isEmpty()) {
+        if (password.trim().isBlank()) {
             return RegisterResult.INVALID_PASSWORD;
         }
         if (password.contains(":")) {
