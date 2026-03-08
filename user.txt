@@ -5,3 +5,6 @@ rty:$2a$10$mfX.xkCjQ25VneF1EdNq6.40i1pc5QQjh38ZL3oYNzuF5at.Zv/jC
 asd:$2a$10$Vba4DDdlCNJG1HXsOrBIrOyelHwb1MsESA8sRq4EuY8/RE8PiVdYm
 asdf:$2a$10$Z4A9U.I7u2mzLkOyt4cVFeh4fayufH54beMxR2bR5mVyNfH.5Y8Yi
 rtyu:$2a$10$pMN4pt65uum0fBz2OTEgx.dJfdyia2HprgHNRCEgxaMi5e98CQ2za
+123:$2a$10$/G50Lsep85xk9RKHPlGRIuM5H7iWC4MsxecLBrxv80A5qsAYAlPxG
+qwe:$2a$10$a6kcleP/Q6ww.9CmRRMpgOajaNKmICSNSLOmYAsxDP/DbET93rTGG
+awod:$2a$10$SI4Jisc/moSR4BphEvpWSuFsjAwik4ucAexEnotqd80BQQfqqwERG
