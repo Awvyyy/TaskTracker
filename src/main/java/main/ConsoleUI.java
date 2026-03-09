@@ -1,9 +1,61 @@
 package main;
 
+import java.util.List;
 import java.util.Scanner;
+
+import static main.Session.logOut;
 
 public class ConsoleUI {
     private static final Scanner scanner = new Scanner(System.in);
+
+    public static void start(){
+        boolean running = true;
+
+        while (running) {
+            printMenu();
+            int option = readMenuOptions(scanner);
+            scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    handleLogin();
+                    break;
+                case 2:
+                    handleRegister();
+                    break;
+                case 3:
+                    handleCheckUser();
+                    break;
+                case 4:
+                    handleTaskCreate();
+                    break;
+                case 5:
+                    handleShowTasks();
+                    break;
+                case 6:
+                    logOut();
+                    System.out.println("Logging out...");
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Unexpected option!");
+            }
+        }
+    }
+
+    public static void printMenu(){
+        System.out.println("1 - Login");
+        System.out.println("2 - Register");
+        System.out.println("3 - Check user's existence");
+        System.out.println("4 - Create task");
+        System.out.println("5 - Show tasks");
+        System.out.println("6 - Log out");
+        System.out.println("7 - Exit");
+        System.out.print("Choose option: ");
+    }
 
     public static int readMenuOptions(Scanner scanner) {
         int op;
@@ -13,8 +65,8 @@ public class ConsoleUI {
                 scanner.nextLine();
             }
             op = scanner.nextInt();
-            if (op < 1 || op > 4) {
-                System.err.println("Number must be between 1 and 4!");
+            if (op < 1 || op > 7) {
+                System.err.println("Number must be between 1 and 7!");
             } else {
                 break;
             }
@@ -102,39 +154,38 @@ public class ConsoleUI {
                 break;
         }
     }
-    public static void printMenu(){
-        System.out.println("1 - Login");
-        System.out.println("2 - Register");
-        System.out.println("3 - Check user's existence");
-        System.out.println("4 - Exit");
-        System.out.print("Choose option: ");
+    public static void handleTaskCreate(){
+        System.out.print("Enter task title: ");
+        String taskTitle = scanner.nextLine();
+        System.out.print("Enter task description: ");
+        String taskDescription = scanner.nextLine();
+        System.out.println();
+        Task task = TaskService.taskCreate(taskTitle, taskDescription);
+        if (task == null) {
+            System.out.println("You need to login first!");
+            return;
+        }
+        System.out.println("Task created successfully!");
     }
 
-    public static void start(){
-        boolean running = true;
+    public static void handleShowTasks() {
+        if (!Session.isCurrentSession()) {
+            System.out.println("User not logged in!");
+            return;
+        }
 
-        while (running) {
-            printMenu();
-            int option = readMenuOptions(scanner);
-            scanner.nextLine();
+        List<Task> tasks = TaskService.userTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("No current tasks");
+            return;
+        }
 
-            switch (option) {
-                case 1:
-                    handleLogin();
-                    break;
-                case 2:
-                    handleRegister();
-                    break;
-                case 3:
-                    handleCheckUser();
-                    break;
-                case 4:
-                    System.out.println("Exiting...");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Unexpected option!");
-            }
+        for (Task task : tasks) {
+            System.out.println("Id: " + task.getTaskId());
+            System.out.println("Title: " + task.getTaskTitle());
+            System.out.println("Description: " + task.getTaskDescription());
+            System.out.println("Status: " + task.getTaskStatus());
+            System.out.println();
         }
     }
 }

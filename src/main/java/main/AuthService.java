@@ -10,14 +10,13 @@ import static main.UserRepository.findHashByUsername;
 public class AuthService {
 
     public static CheckUserResult checkUser(String username){
-        String storedUsername = findHashByUsername(username);
-        if (storedUsername == null){
+        String storedPassword = findHashByUsername(username);
+        if (storedPassword == null){
             return CheckUserResult.USER_NOT_FOUND;
         }
         else {
             return CheckUserResult.USER_EXISTS;
         }
-
     }
 
     public static LoginResult login(String username, String password) {
@@ -34,6 +33,8 @@ public class AuthService {
             return LoginResult.USER_NOT_FOUND;
         }
         if (verify(password, stored)) {
+            Session.setCurrentUser(username);
+            Session.setCurrentSession(true);
             return LoginResult.SUCCESS;
         }
         return LoginResult.WRONG_PASSWORD;
