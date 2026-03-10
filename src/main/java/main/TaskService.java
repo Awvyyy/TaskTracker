@@ -22,9 +22,6 @@ public class TaskService {
         return null;
     }
 
-    public static List<Task> showTasks(){
-        return tasks;
-    }
 
     public static List<Task> userTasks(){
         List<Task> currentUserTasks = new ArrayList<>();
@@ -39,5 +36,18 @@ public class TaskService {
             }
         }
         return currentUserTasks;
+    }
+    public static List<Task>  taskDelete(int taskId){
+        List<Task> currentUserTasks = new ArrayList<>();
+        tasks.removeIf(task -> taskId == task.getTaskId());
+        return tasks;
+    }
+    public static List<Task> taskEdit (int taskId, String taskTitle, String taskDescription){
+        taskDelete(taskId);
+        taskCreate(taskTitle, taskDescription);
+
+
+
+        return tasks;
     }
 }

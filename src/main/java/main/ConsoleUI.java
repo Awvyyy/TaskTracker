@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import static main.Session.logOut;
+import static main.TaskService.taskDelete;
+import static main.TaskService.taskEdit;
 
 public class ConsoleUI {
     private static final Scanner scanner = new Scanner(System.in);
@@ -27,9 +29,30 @@ public class ConsoleUI {
                     handleCheckUser();
                     break;
                 case 4:
-                    handleTaskCreate();
+                    printTaskMenu();
+                    int option1 = readMenuOptions(scanner);
+                    scanner.nextLine();
+                    switch (option1){
+                        case 1:
+                            System.out.println();
+                            handleTaskCreate();
+                            break;
+                        case 2:
+                            System.out.println();
+                            handleTaskDelete();
+                            break;
+                        case 3:
+                            System.out.println();
+                            handleTaskEdit();
+                            break;
+                        case 4:
+                            System.out.println();
+                            System.out.println("Exiting...");
+                            break;
+                    }
                     break;
                 case 5:
+                    System.out.println();
                     handleShowTasks();
                     break;
                 case 6:
@@ -47,13 +70,23 @@ public class ConsoleUI {
     }
 
     public static void printMenu(){
+        System.out.println();
         System.out.println("1 - Login");
         System.out.println("2 - Register");
         System.out.println("3 - Check user's existence");
-        System.out.println("4 - Create task");
+        System.out.println("4 - Tasks");
         System.out.println("5 - Show tasks");
         System.out.println("6 - Log out");
         System.out.println("7 - Exit");
+        System.out.print("Choose option: ");
+    }
+
+    public static void printTaskMenu(){
+        System.out.println();
+        System.out.println("1 - Create task");
+        System.out.println("2 - Delete task");
+        System.out.println("3 - edit task");
+        System.out.println("4 - exit");
         System.out.print("Choose option: ");
     }
 
@@ -187,5 +220,27 @@ public class ConsoleUI {
             System.out.println("Status: " + task.getTaskStatus());
             System.out.println();
         }
+    }
+    public static void handleTaskDelete(){
+        System.out.println();
+        System.out.print("Enter task id: ");
+        int taskId = scanner.nextInt();
+        taskDelete(taskId);
+    }
+    public static void handleTaskEdit(){
+        System.out.println();
+        System.out.print("Enter task Id: ");
+        int taskId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter new task Title: ");
+        String taskTitle = scanner.nextLine();
+        System.out.println();
+
+        System.out.print("Enter new task Description: ");
+        String taskDescription = scanner.nextLine();
+        taskEdit(taskId, taskTitle, taskDescription);
+        System.out.println();
+
     }
 }
