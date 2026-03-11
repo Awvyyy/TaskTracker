@@ -232,12 +232,9 @@ public class ConsoleUI {
         System.out.print("Enter task description: ");
         String taskDescription = scanner.nextLine();
         System.out.println();
-        Task task = TaskService.taskCreate(taskTitle, taskDescription);
-        if (task == null) {
-            System.out.println("You need to login first!");
-            return;
-        }
-        System.out.println("Task created successfully!");
+
+        TaskActionResult result = TaskService.taskCreate(taskTitle, taskDescription);
+        printTaskActionResult(result, "Task created successfully!");
     }
 
     public static void handleShowTasks() {
@@ -260,30 +257,93 @@ public class ConsoleUI {
             System.out.println();
         }
     }
-    public static void handleTaskDelete(){
-        System.out.println();
-        System.out.print("Enter task id: ");
-        int taskId = scanner.nextInt();
-        taskDelete(taskId);
+
+    public static void handleTaskDelete() {
+        Integer taskId = readTaskId("Enter task id: ");
+        if (taskId == null) {
+            System.out.println("Exiting...");
+            return;
+        }
+
+        TaskActionResult result = taskDelete(taskId);
+        printTaskActionResult(result, "Task deleted successfully!");
     }
-    public static void handleTaskEdit(){
+
+    public static void handleTaskEdit() {
         System.out.println();
-        System.out.print("Enter task Id: ");
-        int taskId = scanner.nextInt();
-        scanner.nextLine();
+        Integer taskId = readTaskId("Enter task Id: ");
+        if (taskId == null) {
+            System.out.println("Exiting...");
+            return;
+        }
 
         System.out.print("Enter new task Title: ");
         String taskTitle = scanner.nextLine();
 
         System.out.print("Enter new task Description: ");
         String taskDescription = scanner.nextLine();
-        taskEdit(taskId, taskTitle, taskDescription);
-    }
-    public static void handleTaskMarker(){
-        System.out.println();
-        System.out.print("Enter task ID: ");
-        int taskId = scanner.nextInt();
-        taskMarker(taskId);
 
+        TaskActionResult result = taskEdit(taskId, taskTitle, taskDescription);
+        printTaskActionResult(result, "Task updated successfully!");
+    }
+
+    public static void handleTaskMarker() {
+        System.out.println();
+        Integer taskId = readTaskId("Enter task ID: ");
+        if (taskId == null) {
+            System.out.println("Exiting...");
+            return;
+        }
+
+        TaskActionResult result = taskMarker(taskId);
+        printTaskActionResult(result, "Task marked as done!");
+    }
+
+    private static Integer readTaskId(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            while (!scanner.hasNextInt()) {
+                if (!scanner.hasNextLine()) {
+                    return null;
+                }
+                System.err.println("Enter a valid task id!");
+                scanner.nextLine();
+                System.out.print(prompt);
+            }
+
+            int taskId = scanner.nextInt();
+            scanner.nextLine();
+            if (taskId < 1) {
+                System.err.println("Task id must be positive!");
+                continue;
+            }
+            return taskId;
+        }
+    }
+
+    private static void printTaskActionResult(TaskActionResult result, String successMessage) {
+        switch (result) {
+            case SUCCESS:
+                System.out.println(successMessage);
+                break;
+            case NOT_LOGGED_IN:
+                System.out.println("You need to login first!");
+                break;
+            case TASK_NOT_FOUND:
+                System.out.println("Task not found!");
+                break;
+            case INVALID_TITLE:
+                System.out.println("Task title can't be blank!");
+                break;
+            case INVALID_DESCRIPTION:
+                System.out.println("Task description can't be blank!");
+                break;
+            case ALREADY_DONE:
+                System.out.println("Task is already marked as done!");
+                break;
+            default:
+                System.out.println("Unexpected error!");
+                break;
+        }
     }
 }
