@@ -43,11 +43,29 @@ public class TaskService {
         return tasks;
     }
     public static List<Task> taskEdit (int taskId, String taskTitle, String taskDescription){
-        taskDelete(taskId);
-        taskCreate(taskTitle, taskDescription);
-
-
-
+        List<Task> currentUserTasks = new ArrayList<>();
+        String currentUser = Session.getCurrentUser();
+        for (Task task : tasks){
+            if(task.getTaskOwner().equals(currentUser)){
+                if(task.getTaskId() == taskId){
+                    task.setTaskTitle(taskTitle);
+                    task.setTaskDescription(taskDescription);
+                    return tasks;
+                }
+            }
+        }
         return tasks;
+    }
+
+    public static void taskMarker (int taskId){
+        List<Task> currentUserTasks = new ArrayList<>();
+        String currentUser = Session.getCurrentUser();
+        for (Task task : tasks){
+            if(task.getTaskOwner().equals(currentUser)){
+                if(taskId == task.getTaskId()){
+                    task.setTaskStatus(TaskStatus.TASK_DONE);
+                }
+            }
+        }
     }
 }

@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static main.Session.logOut;
-import static main.TaskService.taskDelete;
-import static main.TaskService.taskEdit;
+import static main.TaskService.*;
 
 public class ConsoleUI {
     private static final Scanner scanner = new Scanner(System.in);
@@ -71,8 +70,26 @@ public class ConsoleUI {
                             handleTaskDelete();
                             break;
                         case 3:
-                            System.out.println();
-                            handleTaskEdit();
+                            printTaskEditMenu();
+                            int option3 = readMenuOptions(scanner, 3);
+                            if (option3 == -1) {
+                                System.out.println("Exiting...");
+                                return;
+                            }
+                            scanner.nextLine();
+                            switch(option3) {
+                                case 1:
+                                    System.out.println();
+                                    handleTaskEdit();
+                                    break;
+                                case 2:
+                                    System.out.println();
+                                    handleTaskMarker();
+                                    break;
+                                case 3:
+                                    System.out.println("Exiting...");
+                                    break;
+                            }
                             break;
                         case 4:
                             System.out.println();
@@ -114,6 +131,14 @@ public class ConsoleUI {
         System.out.println("3 - edit task");
         System.out.println("4 - exit");
         System.out.print("Choose option: ");
+    }
+
+    public static void printTaskEditMenu(){
+        System.out.println();
+        System.out.println("1 - Edit task");
+        System.out.println("2 - Mark task as done");
+        System.out.println("3 - Exit");
+        System.out.println("Choose option: ");
     }
 
     public static int readMenuOptions(Scanner scanner, int maxOption) {
@@ -249,12 +274,16 @@ public class ConsoleUI {
 
         System.out.print("Enter new task Title: ");
         String taskTitle = scanner.nextLine();
-        System.out.println();
 
         System.out.print("Enter new task Description: ");
         String taskDescription = scanner.nextLine();
         taskEdit(taskId, taskTitle, taskDescription);
+    }
+    public static void handleTaskMarker(){
         System.out.println();
+        System.out.print("Enter task ID: ");
+        int taskId = scanner.nextInt();
+        taskMarker(taskId);
 
     }
 }
